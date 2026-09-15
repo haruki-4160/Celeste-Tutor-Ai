@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import ProblemInput from '@/components/ProblemInput';
 import Sidebar from '@/components/Sidebar';
-import TutorChat from '@/components/TutorChat';
+import TutorChat, { Message } from '@/components/TutorChat';
 
 export default function Home() {
   const [studentWorking, setStudentWorking] = useState(`Given:
@@ -18,10 +18,10 @@ a = 8 m/s²`);
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [image, setImage] = useState<string | null>(null);
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      role: 'tutor' as const,
+      role: 'tutor',
       text: 'Hi there! I noticed you are working on an acceleration problem. Would you like me to take a look at your working?',
     }
   ]);
