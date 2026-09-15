@@ -1,6 +1,9 @@
 import { GoogleGenAI, Type, Schema } from '@google/genai';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
+
 // The client will be initialized inside the POST handler
 
 // Define the exact JSON structure we want Gemini to return

@@ -31,6 +31,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Environment Variables for Vercel
+When deploying to Vercel, add the following variables in **Project Settings > Environment Variables**:
+
+| Variable | Description | Required |
+|---|---|---|
+| `GEMINI_API_KEY` | Google Gemini API Key for Socratic AI analysis | Yes |
+| `GROQ_API_KEY_PRIORITY` | Groq API Key (Fast fallback provider) | Optional |
+| `GROQ_API_KEY_FALLBACK` | Groq Secondary Fallback API Key | Optional |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase Web API Key for user authentication | Optional (builds safely if omitted) |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Firebase Auth Domain | Optional |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | Firebase Project ID | Optional |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | Firebase Storage Bucket | Optional |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase Messaging Sender ID | Optional |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase Web App ID | Optional |
+
