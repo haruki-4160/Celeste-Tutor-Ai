@@ -23,14 +23,23 @@ export default function Sidebar({ onNewSession, onSettingsClick }: SidebarProps)
 
   return (
     <aside className="w-64 h-screen bg-[var(--color-celeste-dark)]/80 backdrop-blur-md flex flex-col p-6 hidden md:flex shrink-0 shadow-[4px_0_24px_rgb(0,0,0,0.02)] z-10">
-      {/* Brand / Logo */}
-      <Link href="/" className="flex items-center gap-3 mb-10 cursor-pointer">
-        <img src="/logo.jpg" alt="Celeste Logo" className="w-10 h-10 rounded-2xl shadow-md shadow-[var(--color-celeste-purple-light)]/50 object-cover" />
-        <div>
-          <h1 className="text-xl font-bold text-[var(--color-celeste-text)] leading-tight flex items-center gap-1">Celeste <Sparkles className="w-4 h-4 text-amber-400" /></h1>
-          <p className="text-xs text-[var(--color-celeste-purple)] font-medium">Learn Brighter ✨ Go Further</p>
-        </div>
-      </Link>
+      {/* Brand / Logo & Streak */}
+      <div className="flex items-center justify-between mb-10">
+        <Link href="/" className="flex items-center gap-3 cursor-pointer">
+          <img src="/logo.jpg" alt="Celeste Logo" className="w-10 h-10 rounded-2xl shadow-md shadow-[var(--color-celeste-purple-light)]/50 object-cover" />
+          <div>
+            <h1 className="text-xl font-bold text-[var(--color-celeste-text)] leading-tight flex items-center gap-1">Celeste <Sparkles className="w-4 h-4 text-amber-400" /></h1>
+            <p className="text-xs text-[var(--color-celeste-purple)] font-medium truncate max-w-[100px]">Learn Brighter</p>
+          </div>
+        </Link>
+        
+        {user && (
+          <div className="flex items-center gap-1 bg-orange-50 px-2.5 py-1 rounded-xl border border-orange-200 shadow-sm shrink-0" title="3 Day Streak!">
+            <span className="text-orange-500 text-sm font-bold">3</span>
+            <span className="text-sm">🔥</span>
+          </div>
+        )}
+      </div>
 
       {/* Navigation */}
       <nav className="flex-1 space-y-2">
@@ -67,24 +76,40 @@ export default function Sidebar({ onNewSession, onSettingsClick }: SidebarProps)
         })}
       </nav>
 
-      {/* User Profile */}
+      {/* User Profile & Gamification */}
       <div className="mt-auto pt-6 border-t border-[var(--color-celeste-purple-light)]/30">
         {!loading && user ? (
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 max-w-[150px]">
-              {user.photoURL ? (
-                <img src={user.photoURL} alt="Avatar" className="w-9 h-9 rounded-full border-2 border-white shadow-sm shrink-0" />
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[var(--color-celeste-purple)] to-purple-400 shrink-0 border-2 border-white shadow-sm" />
-              )}
-              <span className="text-sm font-semibold text-[var(--color-celeste-text)] truncate">{user.displayName || "Student"}</span>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 max-w-[150px]">
+                {user.photoURL ? (
+                  <img src={user.photoURL} alt="Avatar" className="w-9 h-9 rounded-full border-2 border-white shadow-sm shrink-0" />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[var(--color-celeste-purple)] to-purple-400 shrink-0 border-2 border-white shadow-sm" />
+                )}
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-sm font-semibold text-[var(--color-celeste-text)] truncate">{user.displayName || "Student"}</span>
+                  <span className="text-[10px] text-[var(--color-celeste-purple)] font-bold uppercase tracking-wider">Level 4</span>
+                </div>
+              </div>
+              <button 
+                onClick={onSettingsClick}
+                className="text-slate-400 hover:text-[var(--color-celeste-purple)] transition-colors shrink-0"
+              >
+                <Settings className="w-5 h-5" />
+              </button>
             </div>
-            <button 
-              onClick={onSettingsClick}
-              className="text-slate-400 hover:text-[var(--color-celeste-purple)] transition-colors shrink-0"
-            >
-              <Settings className="w-5 h-5" />
-            </button>
+            
+            {/* XP Progress Bar */}
+            <div className="w-full">
+              <div className="flex justify-between text-xs mb-1.5">
+                <span className="text-[var(--color-celeste-purple)] font-bold">420 XP</span>
+                <span className="text-slate-400 font-medium">500 XP</span>
+              </div>
+              <div className="w-full h-2.5 bg-white rounded-full overflow-hidden shadow-inner border border-[var(--color-celeste-light)]">
+                <div className="h-full bg-gradient-to-r from-[var(--color-celeste-purple)] to-fuchsia-400 rounded-full shadow-sm" style={{ width: '84%' }} />
+              </div>
+            </div>
           </div>
         ) : !loading ? (
           <button 
