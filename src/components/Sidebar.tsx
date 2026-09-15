@@ -23,9 +23,7 @@ export default function Sidebar({ onNewSession, onSettingsClick }: SidebarProps)
     <aside className="w-64 h-screen bg-[var(--color-celeste-dark)]/80 backdrop-blur-md flex flex-col p-6 hidden md:flex shrink-0 shadow-[4px_0_24px_rgb(0,0,0,0.02)] z-10">
       {/* Brand / Logo */}
       <Link href="/" className="flex items-center gap-3 mb-10 cursor-pointer">
-        <div className="bg-[var(--color-celeste-purple)] text-white p-2 rounded-2xl flex items-center justify-center shadow-md shadow-[var(--color-celeste-purple-light)]/50">
-          <Moon className="w-6 h-6 fill-white" />
-        </div>
+        <img src="/logo.jpg" alt="Celeste Logo" className="w-10 h-10 rounded-2xl shadow-md shadow-[var(--color-celeste-purple-light)]/50 object-cover" />
         <div>
           <h1 className="text-xl font-bold text-[var(--color-celeste-text)] leading-tight flex items-center gap-1">Celeste <Sparkles className="w-4 h-4 text-amber-400" /></h1>
           <p className="text-xs text-[var(--color-celeste-purple)] font-medium">Learn Brighter ✨ Go Further</p>

@@ -56,12 +56,12 @@ export default function TutorChat({ messages, isAnalyzing }: TutorChatProps) {
               animate={{ opacity: 1, y: 0 }}
               className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
             >
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-sm ${
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-sm overflow-hidden ${
                 msg.role === 'tutor' 
-                  ? 'bg-gradient-to-br from-[var(--color-celeste-purple)] to-[var(--color-celeste-purple-light)] text-white' 
+                  ? 'border border-[var(--color-celeste-purple-light)]' 
                   : 'bg-white text-[var(--color-celeste-purple)] border-2 border-[var(--color-celeste-light)]'
               }`}>
-                {msg.role === 'tutor' ? <Bot size={20} /> : <User size={20} />}
+                {msg.role === 'tutor' ? <img src="/logo.jpg" alt="Tutor" className="w-full h-full object-cover" /> : <User size={20} />}
               </div>
               
               <div className={`flex flex-col gap-3 max-w-[85%] ${
@@ -90,8 +90,8 @@ export default function TutorChat({ messages, isAnalyzing }: TutorChatProps) {
               animate={{ opacity: 1, y: 0 }}
               className="flex gap-4 flex-row"
             >
-              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-sm bg-gradient-to-br from-[var(--color-celeste-purple)] to-[var(--color-celeste-purple-light)] text-white">
-                <Bot size={20} />
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-[var(--color-celeste-purple-light)] overflow-hidden">
+                <img src="/logo.jpg" alt="Tutor" className="w-full h-full object-cover" />
               </div>
               <div className="flex flex-col gap-3 max-w-[85%] items-start">
                 <div className="p-5 rounded-3xl text-[15px] leading-relaxed shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-white bg-white text-[var(--color-celeste-purple)] rounded-tl-none flex items-center gap-3">
