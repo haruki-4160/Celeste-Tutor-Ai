@@ -25,17 +25,23 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 space-y-2">
         {navItems.map((item) => (
-          <button
-            key={item.name}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${
-              item.active
-                ? 'bg-white text-[var(--color-celeste-text)] font-semibold shadow-sm'
-                : 'text-slate-500 hover:bg-white/50 hover:text-[var(--color-celeste-text)] font-medium'
-            }`}
-          >
-            <item.icon className={`w-5 h-5 ${item.active ? 'text-[var(--color-celeste-purple)]' : 'text-slate-400'}`} />
-            {item.name}
-          </button>
+          <div key={item.name}>
+            <button
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${
+                item.active
+                  ? 'bg-white text-[var(--color-celeste-text)] font-semibold shadow-sm'
+                  : 'text-slate-500 hover:bg-white/50 hover:text-[var(--color-celeste-text)] font-medium'
+              }`}
+            >
+              <item.icon className={`w-5 h-5 ${item.active ? 'text-[var(--color-celeste-purple)]' : 'text-slate-400'}`} />
+              {item.name}
+            </button>
+            {item.name === 'History' && (
+              <div className="pl-12 pr-4 py-2 mt-1">
+                <p className="text-xs text-slate-400 italic">No recent history</p>
+              </div>
+            )}
+          </div>
         ))}
       </nav>
 

@@ -17,6 +17,7 @@ a = 40 / 5
 a = 8 m/s²`);
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
   const [messages, setMessages] = useState([
     {
       id: '1',
@@ -35,15 +36,22 @@ a = 8 m/s²`);
       text: 'Yes, please review my work.'
     }]);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
     try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: 'A car accelerates from 10 m/s to 30 m/s in 5 seconds. Find the acceleration.',
-          studentWorking: studentWorking
-        })
+          studentWorking: studentWorking,
+          image: image
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!res.ok) throw new Error("Failed to analyze");
       const data = await res.json();
@@ -54,14 +62,19 @@ a = 8 m/s²`);
         text: data.tutorMessage,
         hints: data.hints
       }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      let errorMessage = "I'm having a little trouble thinking right now. Please try again!";
+      if (error.name === 'AbortError') {
+        errorMessage = "The request took too long. Please try again!";
+      }
       setMessages(prev => [...prev, {
         id: Date.now().toString(),
         role: 'tutor',
-        text: "I'm having a little trouble thinking right now. Please try again!",
+        text: errorMessage,
       }]);
     } finally {
+      clearTimeout(timeoutId);
       setIsAnalyzing(false);
     }
   };
@@ -86,6 +99,8 @@ a = 8 m/s²`);
                 setStudentWorking={setStudentWorking} 
                 onAnalyze={analyzeReasoning}
                 isAnalyzing={isAnalyzing}
+                image={image}
+                setImage={setImage}
               />
             </div>
 

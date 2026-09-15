@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server';
 // The client will be initialized inside the POST handler
 
 // Define the exact JSON structure we want Gemini to return
+const rateLimitMap = new Map<string, { count: number, timestamp: number }>();
+
 const responseSchema: Schema = {
   type: Type.OBJECT,
   properties: {
@@ -35,6 +37,23 @@ const responseSchema: Schema = {
 };
 
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
+  const now = Date.now();
+  const rateLimitWindow = 60000; // 1 minute
+  
+  const record = rateLimitMap.get(ip) ?? { count: 0, timestamp: now };
+  if (now - record.timestamp > rateLimitWindow) {
+    record.count = 1;
+    record.timestamp = now;
+  } else {
+    record.count++;
+  }
+  rateLimitMap.set(ip, record);
+
+  if (record.count > 5) {
+    return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
+  }
+
   try {
     const body = await req.json();
     const { question, studentWorking, image } = body;
@@ -47,6 +66,9 @@ export async function POST(req: Request) {
     // 3. Security: Enforce length limits to prevent abuse (e.g., sending massive text payloads)
     if (question.length > 1000 || (studentWorking && studentWorking.length > 5000)) {
       return NextResponse.json({ error: "Input exceeds maximum allowed length." }, { status: 413 });
+    }
+    if (image && image.length > 5500000) {
+      return NextResponse.json({ error: "Image payload too large. Maximum size is ~4MB." }, { status: 413 });
     }
 
     const promptText = `You are an expert Socratic physics and math tutor named Celeste Tutor Ai. 
@@ -116,7 +138,8 @@ IMPORTANT: You MUST return a valid JSON object matching the requested schema.`;
           messages: messages,
           temperature: 0.2,
           response_format: { type: "json_object" }
-        })
+        }),
+        signal: AbortSignal.timeout(15000)
       });
 
       if (!response.ok) {
