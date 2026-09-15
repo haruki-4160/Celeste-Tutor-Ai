@@ -1,8 +1,9 @@
 "use client";
 
-import { Home, PlusCircle, Clock, BookOpen, Folder, Settings, Moon, Sparkles } from 'lucide-react';
+import { Home, PlusCircle, Clock, BookOpen, Folder, Settings, Moon, Sparkles, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 interface SidebarProps {
   onNewSession?: () => void;
@@ -11,6 +12,7 @@ interface SidebarProps {
 
 export default function Sidebar({ onNewSession, onSettingsClick }: SidebarProps) {
   const pathname = usePathname();
+  const { user, signInWithGoogle, loading } = useAuth();
 
   const navItems = [
     { name: 'Home', href: '/', icon: Home },
@@ -66,17 +68,37 @@ export default function Sidebar({ onNewSession, onSettingsClick }: SidebarProps)
       </nav>
 
       {/* User Profile */}
-      <div className="mt-auto pt-6 border-t border-[var(--color-celeste-purple-light)]/30 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[var(--color-celeste-purple)] to-purple-400 shrink-0 border-2 border-white shadow-sm" />
-          <span className="text-sm font-semibold text-[var(--color-celeste-text)]">lunar_ash</span>
-        </div>
-        <button 
-          onClick={onSettingsClick}
-          className="text-slate-400 hover:text-[var(--color-celeste-purple)] transition-colors"
-        >
-          <Settings className="w-5 h-5" />
-        </button>
+      <div className="mt-auto pt-6 border-t border-[var(--color-celeste-purple-light)]/30">
+        {!loading && user ? (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3 max-w-[150px]">
+              {user.photoURL ? (
+                <img src={user.photoURL} alt="Avatar" className="w-9 h-9 rounded-full border-2 border-white shadow-sm shrink-0" />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[var(--color-celeste-purple)] to-purple-400 shrink-0 border-2 border-white shadow-sm" />
+              )}
+              <span className="text-sm font-semibold text-[var(--color-celeste-text)] truncate">{user.displayName || "Student"}</span>
+            </div>
+            <button 
+              onClick={onSettingsClick}
+              className="text-slate-400 hover:text-[var(--color-celeste-purple)] transition-colors shrink-0"
+            >
+              <Settings className="w-5 h-5" />
+            </button>
+          </div>
+        ) : !loading ? (
+          <button 
+            onClick={signInWithGoogle}
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-white text-[var(--color-celeste-purple)] border border-[var(--color-celeste-light)] hover:shadow-md transition-all font-semibold"
+          >
+            <LogIn className="w-5 h-5" />
+            Sign in with Google
+          </button>
+        ) : (
+          <div className="h-10 flex items-center justify-center">
+            <div className="w-5 h-5 border-2 border-[var(--color-celeste-purple-light)] border-t-[var(--color-celeste-purple)] rounded-full animate-spin" />
+          </div>
+        )}
       </div>
     </aside>
   );
