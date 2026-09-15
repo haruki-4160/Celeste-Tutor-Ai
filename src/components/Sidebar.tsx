@@ -1,18 +1,28 @@
-import { Home, PlusCircle, Clock, BookOpen, Folder, Settings, Moon, Sparkles } from 'lucide-react';
+"use client";
 
-export default function Sidebar() {
+import { Home, PlusCircle, Clock, BookOpen, Folder, Settings, Moon, Sparkles } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+interface SidebarProps {
+  onNewSession?: () => void;
+  onSettingsClick?: () => void;
+}
+
+export default function Sidebar({ onNewSession, onSettingsClick }: SidebarProps) {
+  const pathname = usePathname();
+
   const navItems = [
-    { name: 'Home', icon: Home, active: true },
-    { name: 'New Session', icon: PlusCircle, active: false },
-    { name: 'History', icon: Clock, active: false },
-    { name: 'Subjects', icon: BookOpen, active: false },
-    { name: 'Resources', icon: Folder, active: false },
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'History', href: '/history', icon: Clock },
+    { name: 'Subjects', href: '/subjects', icon: BookOpen },
+    { name: 'Resources', href: '/resources', icon: Folder },
   ];
 
   return (
     <aside className="w-64 h-screen bg-[var(--color-celeste-dark)]/80 backdrop-blur-md flex flex-col p-6 hidden md:flex shrink-0 shadow-[4px_0_24px_rgb(0,0,0,0.02)] z-10">
       {/* Brand / Logo */}
-      <div className="flex items-center gap-3 mb-10">
+      <Link href="/" className="flex items-center gap-3 mb-10 cursor-pointer">
         <div className="bg-[var(--color-celeste-purple)] text-white p-2 rounded-2xl flex items-center justify-center shadow-md shadow-[var(--color-celeste-purple-light)]/50">
           <Moon className="w-6 h-6 fill-white" />
         </div>
@@ -20,29 +30,41 @@ export default function Sidebar() {
           <h1 className="text-xl font-bold text-[var(--color-celeste-text)] leading-tight flex items-center gap-1">Celeste <Sparkles className="w-4 h-4 text-amber-400" /></h1>
           <p className="text-xs text-[var(--color-celeste-purple)] font-medium">Learn Brighter ✨ Go Further</p>
         </div>
-      </div>
+      </Link>
 
       {/* Navigation */}
       <nav className="flex-1 space-y-2">
-        {navItems.map((item) => (
-          <div key={item.name}>
-            <button
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${
-                item.active
-                  ? 'bg-white text-[var(--color-celeste-text)] font-semibold shadow-sm'
-                  : 'text-slate-500 hover:bg-white/50 hover:text-[var(--color-celeste-text)] font-medium'
-              }`}
-            >
-              <item.icon className={`w-5 h-5 ${item.active ? 'text-[var(--color-celeste-purple)]' : 'text-slate-400'}`} />
-              {item.name}
-            </button>
-            {item.name === 'History' && (
-              <div className="pl-12 pr-4 py-2 mt-1">
-                <p className="text-xs text-slate-400 italic">No recent history</p>
-              </div>
-            )}
-          </div>
-        ))}
+        <button
+          onClick={onNewSession}
+          className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-[var(--color-celeste-purple)] bg-[var(--color-celeste-purple)]/10 hover:bg-[var(--color-celeste-purple)]/20 font-semibold mb-6`}
+        >
+          <PlusCircle className="w-5 h-5" />
+          New Session
+        </button>
+
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <div key={item.name}>
+              <Link
+                href={item.href}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${
+                  isActive
+                    ? 'bg-white text-[var(--color-celeste-text)] font-semibold shadow-sm'
+                    : 'text-slate-500 hover:bg-white/50 hover:text-[var(--color-celeste-text)] font-medium'
+                }`}
+              >
+                <item.icon className={`w-5 h-5 ${isActive ? 'text-[var(--color-celeste-purple)]' : 'text-slate-400'}`} />
+                {item.name}
+              </Link>
+              {item.name === 'History' && isActive && (
+                <div className="pl-12 pr-4 py-2 mt-1">
+                  <p className="text-xs text-slate-400 italic">No recent history</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </nav>
 
       {/* User Profile */}
@@ -51,7 +73,10 @@ export default function Sidebar() {
           <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[var(--color-celeste-purple)] to-purple-400 shrink-0 border-2 border-white shadow-sm" />
           <span className="text-sm font-semibold text-[var(--color-celeste-text)]">lunar_ash</span>
         </div>
-        <button className="text-slate-400 hover:text-[var(--color-celeste-purple)] transition-colors">
+        <button 
+          onClick={onSettingsClick}
+          className="text-slate-400 hover:text-[var(--color-celeste-purple)] transition-colors"
+        >
           <Settings className="w-5 h-5" />
         </button>
       </div>

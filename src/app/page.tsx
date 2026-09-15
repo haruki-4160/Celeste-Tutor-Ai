@@ -5,6 +5,13 @@ import Header from '@/components/Header';
 import ProblemInput from '@/components/ProblemInput';
 import Sidebar from '@/components/Sidebar';
 import TutorChat, { Message } from '@/components/TutorChat';
+import SettingsModal from '@/components/SettingsModal';
+
+const DEFAULT_MESSAGE = {
+  id: '1',
+  role: 'tutor' as const,
+  text: 'Hi there! I noticed you are working on an acceleration problem. Would you like me to take a look at your working?',
+};
 
 export default function Home() {
   const [studentWorking, setStudentWorking] = useState(`Given:
@@ -18,13 +25,14 @@ a = 8 m/s²`);
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [image, setImage] = useState<string | null>(null);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      role: 'tutor',
-      text: 'Hi there! I noticed you are working on an acceleration problem. Would you like me to take a look at your working?',
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([DEFAULT_MESSAGE]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const handleNewSession = () => {
+    setStudentWorking('');
+    setImage(null);
+    setMessages([DEFAULT_MESSAGE]);
+  };
 
   const analyzeReasoning = async () => {
     setIsAnalyzing(true);
@@ -80,9 +88,9 @@ a = 8 m/s²`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--color-celeste-light)] to-[var(--color-celeste-dark)] flex">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--color-celeste-light)] to-[var(--color-celeste-dark)] flex relative">
       {/* Sidebar - Column 1 */}
-      <Sidebar />
+      <Sidebar onNewSession={handleNewSession} onSettingsClick={() => setIsSettingsOpen(true)} />
       
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Mobile Header (Hidden on large screens where Sidebar is visible) */}
@@ -111,6 +119,8 @@ a = 8 m/s²`);
           </div>
         </main>
       </div>
+
+      {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} />}
     </div>
   );
 }
