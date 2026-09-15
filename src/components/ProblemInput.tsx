@@ -8,6 +8,8 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 
 interface ProblemInputProps {
+  question: string;
+  setQuestion: (val: string) => void;
   studentWorking: string;
   setStudentWorking: (val: string) => void;
   onAnalyze: () => void;
@@ -15,7 +17,7 @@ interface ProblemInputProps {
   image?: string | null;
   setImage?: (val: string | null) => void;
 }
-export default function ProblemInput({ studentWorking, setStudentWorking, onAnalyze, isAnalyzing, image, setImage }: ProblemInputProps) {
+export default function ProblemInput({ question, setQuestion, studentWorking, setStudentWorking, onAnalyze, isAnalyzing, image, setImage }: ProblemInputProps) {
   const highlight = (code: string) => (
     Prism.highlight(code, Prism.languages.javascript, 'javascript')
   );
@@ -46,11 +48,15 @@ export default function ProblemInput({ studentWorking, setStudentWorking, onAnal
 
   return (
     <div className="flex flex-col gap-6 bg-white/70 backdrop-blur-md p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-full">
-      <div className="bg-[var(--color-celeste-light)] p-5 rounded-2xl border border-white/50 shadow-inner">
+      <div className="bg-[var(--color-celeste-light)] p-5 rounded-2xl border border-white/50 shadow-inner flex flex-col">
         <h2 className="text-xs font-bold text-[var(--color-celeste-purple)] uppercase tracking-wider mb-2">Question</h2>
-        <p className="text-[var(--color-celeste-text)] font-medium">
-          A car accelerates from 10 m/s to 30 m/s in 5 seconds. Find the acceleration.
-        </p>
+        <textarea 
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          placeholder="Type the problem you're trying to solve here..."
+          disabled={isAnalyzing}
+          className="w-full bg-transparent resize-none outline-none text-[var(--color-celeste-text)] font-medium placeholder:text-[var(--color-celeste-purple)]/50 min-h-[60px]"
+        />
       </div>
       <div className="flex-1 flex flex-col">
         <div className="flex justify-between items-center mb-2">

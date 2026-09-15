@@ -10,18 +10,12 @@ import SettingsModal from '@/components/SettingsModal';
 const DEFAULT_MESSAGE = {
   id: '1',
   role: 'tutor' as const,
-  text: 'Hi there! I noticed you are working on an acceleration problem. Would you like me to take a look at your working?',
+  text: 'Hi there! What problem are you working on today? Feel free to type it out or upload a picture!',
 };
 
 export default function Home() {
-  const [studentWorking, setStudentWorking] = useState(`Given:
-u = 10
-v = 30
-t = 5
-
-a = (v + u) / t
-a = 40 / 5
-a = 8 m/s²`);
+  const [question, setQuestion] = useState('');
+  const [studentWorking, setStudentWorking] = useState('');
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [image, setImage] = useState<string | null>(null);
@@ -29,12 +23,15 @@ a = 8 m/s²`);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleNewSession = () => {
+    setQuestion('');
     setStudentWorking('');
     setImage(null);
     setMessages([DEFAULT_MESSAGE]);
   };
 
   const analyzeReasoning = async () => {
+    if (!question.trim() && !image) return; // Prevent empty submission
+    
     setIsAnalyzing(true);
     
     // Add user message
@@ -52,7 +49,7 @@ a = 8 m/s²`);
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          question: 'A car accelerates from 10 m/s to 30 m/s in 5 seconds. Find the acceleration.',
+          question: question,
           studentWorking: studentWorking,
           image: image
         }),
@@ -103,6 +100,8 @@ a = 8 m/s²`);
             {/* Center Panel - Column 2: Problem & Input */}
             <div className="flex flex-col h-full">
               <ProblemInput 
+                question={question}
+                setQuestion={setQuestion}
                 studentWorking={studentWorking} 
                 setStudentWorking={setStudentWorking} 
                 onAnalyze={analyzeReasoning}
