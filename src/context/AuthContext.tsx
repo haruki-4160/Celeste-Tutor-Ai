@@ -4,11 +4,15 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { User, onAuthStateChanged, signInWithPopup, signOut as firebaseSignOut } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebase";
 import { getUserStats, recordProblemSolved, UserStats } from "@/lib/db";
+import AuthModal from "@/components/AuthModal";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   stats: UserStats;
+  isAuthModalOpen: boolean;
+  openAuthModal: () => void;
+  closeAuthModal: () => void;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   updateLocalXP: (amount: number) => void;
@@ -29,6 +33,9 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   stats: defaultStats,
+  isAuthModalOpen: false,
+  openAuthModal: () => {},
+  closeAuthModal: () => {},
   signInWithGoogle: async () => {},
   signOut: async () => {},
   updateLocalXP: () => {},
@@ -40,6 +47,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<UserStats>(defaultStats);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const openAuthModal = () => setIsAuthModalOpen(true);
+  const closeAuthModal = () => setIsAuthModalOpen(false);
 
   const refreshStats = async () => {
     if (user) {
@@ -112,6 +123,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user, 
       loading, 
       stats, 
+      isAuthModalOpen,
+      openAuthModal,
+      closeAuthModal,
       signInWithGoogle, 
       signOut, 
       updateLocalXP, 
@@ -119,6 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       refreshStats 
     }}>
       {children}
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} />
     </AuthContext.Provider>
   );
 }

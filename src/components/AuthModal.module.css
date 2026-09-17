@@ -1,0 +1,273 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 16px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.closeButton:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  transform: rotate(90deg);
+}
+
+.container {
+  position: relative;
+  max-width: 350px;
+  width: 100%;
+  background: #F8F9FD;
+  background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
+  border-radius: 40px;
+  padding: 25px 35px;
+  border: 5px solid rgb(255, 255, 255);
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+  margin: 20px;
+  box-sizing: border-box;
+}
+
+.heading {
+  text-align: center;
+  font-weight: 900;
+  font-size: 30px;
+  color: rgb(16, 137, 211);
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.input {
+  width: 100%;
+  background: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 20px;
+  margin-top: 15px;
+  box-shadow: #cff0ff 0px 10px 10px -5px;
+  border-inline: 2px solid transparent;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.input::-moz-placeholder {
+  color: rgb(170, 170, 170);
+}
+
+.input::placeholder {
+  color: rgb(170, 170, 170);
+}
+
+.input:focus {
+  outline: none;
+  border-inline: 2px solid #12B1D1;
+}
+
+.forgot-password,
+.forgotPassword {
+  display: block;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.forgot-password a,
+.forgotPassword a,
+.forgot-password button,
+.forgotPassword button {
+  font-size: 11px;
+  color: #0099ff;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.forgot-password a:hover,
+.forgotPassword a:hover,
+.forgot-password button:hover,
+.forgotPassword button:hover {
+  text-decoration: underline;
+}
+
+.login-button,
+.loginButton {
+  display: block;
+  width: 100%;
+  font-weight: bold;
+  background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+  color: white;
+  padding-block: 15px;
+  margin: 20px auto;
+  border-radius: 20px;
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.login-button:hover,
+.loginButton:hover {
+  transform: scale(1.03);
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
+}
+
+.login-button:active,
+.loginButton:active {
+  transform: scale(0.95);
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
+}
+
+.login-button:disabled,
+.loginButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.social-account-container,
+.socialAccountContainer {
+  margin-top: 25px;
+}
+
+.title {
+  display: block;
+  text-align: center;
+  font-size: 10px;
+  color: rgb(170, 170, 170);
+}
+
+.social-accounts,
+.socialAccounts {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+.social-button,
+.socialButton {
+  background: linear-gradient(45deg, rgb(0, 0, 0) 0%, rgb(112, 112, 112) 100%);
+  border: 5px solid white;
+  padding: 5px;
+  border-radius: 50%;
+  width: 40px;
+  aspect-ratio: 1;
+  display: grid;
+  place-content: center;
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 12px 10px -8px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.social-button .svg,
+.socialButton .svg {
+  fill: white;
+  margin: auto;
+}
+
+.social-button:hover,
+.socialButton:hover {
+  transform: scale(1.2);
+}
+
+.social-button:active,
+.socialButton:active {
+  transform: scale(0.9);
+}
+
+.agreement {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.agreement a {
+  text-decoration: none;
+  color: #0099ff;
+  font-size: 9px;
+}
+
+.agreement a:hover {
+  text-decoration: underline;
+}
+
+.feedbackMessage {
+  margin-top: 10px;
+  font-size: 11px;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 12px;
+  line-height: 1.4;
+}
+
+.feedbackError {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.feedbackSuccess {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+.authModeToggle {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.authModeToggle button {
+  background: none;
+  border: none;
+  color: #0099ff;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.authModeToggle button:hover {
+  text-decoration: underline;
+}

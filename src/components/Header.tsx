@@ -9,7 +9,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onSettingsClick }: HeaderProps) {
-  const { user, loading, stats, signInWithGoogle } = useAuth();
+  const { user, loading, stats, openAuthModal } = useAuth();
 
   return (
     <header className="border-b border-[var(--color-celeste-light)] bg-white/70 backdrop-blur-md sticky top-0 z-30">
@@ -54,7 +54,7 @@ export default function Header({ onSettingsClick }: HeaderProps) {
           ) : !loading ? (
             <button
               type="button"
-              onClick={signInWithGoogle}
+              onClick={openAuthModal}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[var(--color-celeste-purple-light)] text-xs font-semibold text-[var(--color-celeste-text)] hover:border-[var(--color-celeste-purple)] shadow-2xs transition-all cursor-pointer"
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
